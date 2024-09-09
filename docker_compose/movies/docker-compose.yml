@@ -1,26 +1,49 @@
-version: '3'
 services:
-  service:
+  admin:
     build: app
     expose:
       - "8000"
     env_file:
       - ./.env
+    volumes:
+      - ./static:/var/www/static/
+      - ./media:/var/www/media/
+    depends_on:
+      - postgres
+    entrypoint: >
+      sh -c "python manage.py collectstatic --noinput &&
+             python manage.py migrate &&
+             uwsgi --strict --ini uwsgi.ini"
 
   nginx:
     image: nginx:latest
+    container_name: nginx_server
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./configs:/etc/nginx/conf.d:ro
-    depends_on:
-      - service
+      - ./static:/var/www/static/
+      - ./media:/var/www/media/
     ports:
       - "80:80"
+    depends_on:
+      - admin
 
-  theatre-db:
-#    Тут необходимо описать недостающие элементы
+  postgres:
+    image: postgres:16
+    container_name: postgres_db
+    env_file:
+      - ./.env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
     volumes:
       - ./database_dump.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./pgdata:/var/lib/postgresql/data
 
-
-
+volumes:
+  static:
+  media:
+  pgdata:
