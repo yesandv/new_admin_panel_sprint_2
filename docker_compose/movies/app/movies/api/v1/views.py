@@ -45,16 +45,14 @@ class FilmWorkApiMixin:
         )
 
     def get_queryset(self) -> QuerySet:
-        film_works = self.model.objects.prefetch_related(  # noqa
-            "genres", "persons"
-        ).all()
+        film_works = self.model.objects # noqa
         film_work_fields = film_works.values(
             "id", "title", "description", "creation_date", "rating", "type"
         )
         annotated_film_works = self._annotate(film_work_fields)
         return annotated_film_works
 
-    def render_to_response(self, context, **response_kwargs):  # noqa
+    def render_to_response(self, context, **response_kwargs) -> JsonResponse:  # noqa
         return JsonResponse(context)
 
 
@@ -83,4 +81,4 @@ class FilmWorkListApi(FilmWorkApiMixin, BaseListView):
 class FilmWorkDetailApi(FilmWorkApiMixin, BaseDetailView):
 
     def get_context_data(self, **kwargs) -> dict:
-        return self.get_object()
+        return kwargs["object"]
