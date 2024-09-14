@@ -9,11 +9,13 @@ services:
       - ./static:/var/www/static/
       - ./media:/var/www/media/
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     entrypoint: >
       sh -c "python manage.py collectstatic --noinput &&
              python manage.py migrate &&
              uwsgi --strict --ini uwsgi.ini"
+    restart: always
 
   nginx:
     image: nginx:latest
@@ -37,11 +39,16 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
     volumes:
       - ./database_dump.sql:/docker-entrypoint-initdb.d/init.sql
       - ./pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+      interval: 5s
+      timeout: 5s
+      retries: 3
 
 volumes:
   static:

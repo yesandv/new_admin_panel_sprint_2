@@ -18,7 +18,7 @@ RUN  mkdir -p /var/www/static/ \
      && mkdir -p /app/static/ \
      && mkdir -p /app/media/ \
      && pip install --upgrade pip \
-     && pip install -r requirements.txt
+     && pip install -r requirements.txt --no-cache-dir
 
 COPY . .
 
