@@ -52,7 +52,9 @@ class FilmWorkApiMixin:
         annotated_film_works = self._annotate(film_work_fields)
         return annotated_film_works
 
-    def render_to_response(self, context, **response_kwargs) -> JsonResponse:  # noqa
+    def render_to_response(  # noqa
+            self, context: dict, **response_kwargs  # noqa
+    ) -> JsonResponse:
         return JsonResponse(context)
 
 
