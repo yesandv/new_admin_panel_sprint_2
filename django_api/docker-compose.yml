@@ -1,0 +1,18 @@
+services:
+  newman:
+    image: postman/newman:alpine
+    volumes:
+      - ./movies_API.postman_collection.json:/etc/newman/movies_API.postman_collection.json
+      - ./reports:/etc/newman/reports/
+    command: run "/etc/newman/movies_API.postman_collection.json" \
+      --reporters cli,json \
+      --reporter-json-export /etc/newman/reports/newman-report.json
+    environment:
+      - NODE_OPTIONS=--max_old_space_size=4096
+    working_dir: /etc/newman
+    networks:
+      - movies_default
+
+networks:
+  movies_default:
+    external: true

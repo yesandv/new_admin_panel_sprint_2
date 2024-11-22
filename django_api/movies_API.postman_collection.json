@@ -82,12 +82,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "127.0.0.1:8000/api/v1/movies",
+					"raw": "admin:8000/api/v1/movies",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"admin"
 					],
 					"port": "8000",
 					"path": [
@@ -175,12 +172,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "127.0.0.1:8000/api/v1/movies?page=2",
+					"raw": "admin:8000/api/v1/movies?page=2",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"admin"
 					],
 					"port": "8000",
 					"path": [
@@ -275,12 +269,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "127.0.0.1:8000/api/v1/movies?page=last",
+					"raw": "admin:8000/api/v1/movies?page=last",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"admin"
 					],
 					"port": "8000",
 					"path": [
@@ -306,7 +297,7 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Установка UUID\", function () {",
-							"    pm.sendRequest(\"127.0.0.1:8000/api/v1/movies/\", function (err, response) {",
+							"    pm.sendRequest(\"admin:8000/api/v1/movies/\", function (err, response) {",
 							"      var jsonData = response.json();",
 							"      postman.setEnvironmentVariable(\"movieUuid\", jsonData.results[0].id);",
 							"    });",
@@ -360,12 +351,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "127.0.0.1:8000/api/v1/movies/{{movieUuid}}",
+					"raw": "admin:8000/api/v1/movies/{{movieUuid}}",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"admin"
 					],
 					"port": "8000",
 					"path": [
@@ -397,12 +385,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "127.0.0.1:8000/api/v1/movies/0000",
+					"raw": "admin:8000/api/v1/movies/0000",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"admin"
 					],
 					"port": "8000",
 					"path": [
